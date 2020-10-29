@@ -1,0 +1,25 @@
+<h1>Listing Posts</h1>
+
+<%= if @live_action in [:show] do %>
+  <%= live_modal @socket, AppWeb.PostLive.FormComponent,
+    id: @post.id || :new,
+    title: @page_title,
+    action: @live_action,
+    post: @post,
+    return_to: @to %>
+<% end %>
+
+<div>
+  <div id="posts"
+     phx-update="append"
+     data-page="<%= @page %>">
+    <%= for post <- @posts do %>
+      <%= live_component @socket, LivePost,
+        id: "post-#{post.id}",
+        post: post,
+        to: Routes.post_index_path(@socket, :show, post.id) %>
+    <% end %>
+  </div>
+</div>
+
+<button phx-click="load-more">Load More</button>

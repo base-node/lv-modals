@@ -1,0 +1,18 @@
+<%= if @post do %>
+<%= live_modal @socket, AppWeb.PostLive.FormComponent,
+  id: @post.id,
+  post: @post,
+  return_to: @to %>
+<% end %>
+
+<div>
+  <div id="posts"
+       phx-update="append"
+       data-page="<%= @page %>">
+    <%= for post <- @posts do %>
+      <%= live_component @socket, LivePost, id: "post-#{post.id}", post: post, to: @to %>
+    <% end %>
+  </div>
+</div>
+
+<button phx-click="load-more">Load More</button>
